@@ -139,6 +139,7 @@ public class CACHandler {
     }
 
     private static void executeAction(String reason) {
+        // Пример действия, которое будет выполняться при обнаружении
         System.out.println(reason);
         FMLCommonHandler.instance().exitJava(0, true);
         System.exit(0);
