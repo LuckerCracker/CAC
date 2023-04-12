@@ -17,6 +17,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import sun.reflect.ConstantPool;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -62,6 +63,8 @@ public class CACHandler {
     ));
     private static long updateTime;
 
+    //FMLCorePluginContainsFMLMod: true
+//FMLCorePlugin: ru.k773.cac.CACPlugin
     public static void onUpdate() {
         long currentTime = System.currentTimeMillis();
 
@@ -139,7 +142,6 @@ public class CACHandler {
     }
 
     private static void executeAction(String reason) {
-        // Пример действия, которое будет выполняться при обнаружении
         System.out.println(reason);
         FMLCommonHandler.instance().exitJava(0, true);
         System.exit(0);
@@ -164,6 +166,15 @@ public class CACHandler {
                     }
                 } catch (Exception ignored) {
                 }
+            }
+
+            Class<?> superClass = listenerClass.getSuperclass();
+
+            while (superClass != null && superClass != Object.class) {
+                if (isValidListener(superClass))
+                    return true;
+
+                superClass = superClass.getSuperclass();
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
